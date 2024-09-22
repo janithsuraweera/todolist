@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="softblue">#5B9BD5</color>  //Calming and professional.
+    <color name="mintgreen">#A8D8B9</color> //Fresh and invigorating.
+    <color name="lightgray">#F4F4F4</color>  //Clean and modern.
+    <color name="charcoal">#4B4B4B</color>  //Great for text and contrast.
+
+    <!--fornts-->
+    <!--    Roboto: Clean and modern, good readability.-->
+    <!--    Poppins: Round and friendly, adds a warm touch.-->
+    <!--    Open Sans: Versatile and professional.-->
+    <!-- Splash screen theme -->
+    <style name="Theme.SplashScreen" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Fullscreen to avoid status bar during splash screen -->
+        <item name="android:windowFullscreen">true</item>
+<!--        <item name="android:windowBackground">@drawable/splash_background</item> &lt;!&ndash; Background of splash screen &ndash;&gt;-->
+    </style>
+</resources>
