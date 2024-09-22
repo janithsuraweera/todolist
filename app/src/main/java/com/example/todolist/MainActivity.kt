@@ -7,13 +7,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.SystemClock
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -31,21 +28,20 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-// In onCreate() of MainActivity
+        // Initialize UI Components
+        val editTextTask: EditText = findViewById(R.id.editTextTask)
+        val editTextDescription: EditText = findViewById(R.id.editTextDescription)
+        val buttonAdd: Button = findViewById(R.id.buttonAdd)
+        searchBar = findViewById(R.id.searchBar)
+        listView = findViewById(R.id.listView)
+        alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        // Settings Button
         val settingsButton: Button = findViewById(R.id.buttonSettings)
         settingsButton.setOnClickListener {
             val intent = Intent(this, SettingsActivity::class.java)
             startActivity(intent)
         }
-
-
-        // Initialize UI Components
-        val editTextTask: EditText = findViewById(R.id.editTextTask)
-        val editTextDescription: EditText = findViewById(R.id.editTextDescription) // Ensure this exists in your layout
-        val buttonAdd: Button = findViewById(R.id.buttonAdd)
-        searchBar = findViewById(R.id.searchBar)
-        listView = findViewById(R.id.listView)
-        alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         // SharedPreferences Initialize
         sharedPreferences = getSharedPreferences("ToDoListPrefs", Context.MODE_PRIVATE)
@@ -53,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 
         // Load saved tasks
         todoList = loadTasks()
-        filteredList = todoList.toMutableList() // Now this is safe
+        filteredList = todoList.toMutableList()
         adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, filteredList)
         listView.adapter = adapter
 
@@ -66,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                 // Show TimePickerDialog to select reminder time
                 showTimePickerDialog(task, description)
                 editTextTask.text.clear()
-                editTextDescription.text.clear() // Clear description field
+                editTextDescription.text.clear()
             } else {
                 Toast.makeText(this, "Please enter a task and description", Toast.LENGTH_SHORT).show()
             }
@@ -80,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         // On item long-click (Delete or Update task)
         listView.setOnItemLongClickListener { _, _, position, _ ->
             val selectedTask = filteredList[position]
-            val actualPosition = todoList.indexOf(selectedTask) // Find actual position in original list
+            val actualPosition = todoList.indexOf(selectedTask)
             showUpdateDeleteDialog(selectedTask, actualPosition)
             true
         }
@@ -98,19 +94,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun addTask(task: String) {
         todoList.add(task)
-        filterTasks(searchBar.text.toString()) // Update filtered list after adding task
+        filterTasks(searchBar.text.toString())
         saveTasks()
     }
 
     private fun updateTask(oldTask: String, newTask: String, position: Int) {
         todoList[position] = newTask
-        filterTasks(searchBar.text.toString()) // Update filtered list after updating task
+        filterTasks(searchBar.text.toString())
         saveTasks()
     }
 
     private fun deleteTask(position: Int) {
         todoList.removeAt(position)
-        filterTasks(searchBar.text.toString()) // Update filtered list after deleting task
+        filterTasks(searchBar.text.toString())
         saveTasks()
     }
 
@@ -139,11 +135,11 @@ class MainActivity : AppCompatActivity() {
     private fun filterTasks(query: String) {
         filteredList.clear()
         if (query.isEmpty()) {
-            filteredList.addAll(todoList) // If no search query, show all tasks
+            filteredList.addAll(todoList)
         } else {
             for (task in todoList) {
                 if (task.contains(query, ignoreCase = true)) {
-                    filteredList.add(task) // Add matching tasks to filtered list
+                    filteredList.add(task)
                 }
             }
         }
@@ -183,5 +179,4 @@ class MainActivity : AppCompatActivity() {
 
         Toast.makeText(this, "Alarm set for task: $task", Toast.LENGTH_SHORT).show()
     }
-
 }
