@@ -7,13 +7,10 @@ import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.media.RingtoneManager
-import android.net.Uri
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.widget.addTextChangedListener
 import java.util.*
@@ -44,8 +41,7 @@ class MainActivity : AppCompatActivity() {
         // Settings Button
         val settingsButton: Button = findViewById(R.id.buttonSettings)
         settingsButton.setOnClickListener {
-            val intent = Intent(this, SettingsActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, SettingsActivity::class.java))
         }
 
         // SharedPreferences Initialize
@@ -74,9 +70,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Search Task
-        searchBar.addTextChangedListener { s ->
-            filterTasks(s.toString())
-        }
+        searchBar.addTextChangedListener { s -> filterTasks(s.toString()) }
 
         // On item long-click (Delete or Update task)
         listView.setOnItemLongClickListener { _, _, position, _ ->
@@ -125,7 +119,6 @@ class MainActivity : AppCompatActivity() {
         sendBroadcast(intent) // Send the broadcast
     }
 
-
     private fun showUpdateDeleteDialog(task: String, position: Int) {
         val dialog = AlertDialog.Builder(this)
         dialog.setTitle("Update or Delete Task")
@@ -141,9 +134,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        dialog.setNegativeButton("Delete") { _, _ ->
-            deleteTask(position)
-        }
+        dialog.setNegativeButton("Delete") { _, _ -> deleteTask(position) }
 
         dialog.create().show()
     }
@@ -188,7 +179,7 @@ class MainActivity : AppCompatActivity() {
             putExtra("TASK", task)
             putExtra("DESCRIPTION", description)
         }
-        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent = PendingIntent.getBroadcast(this, todoList.size, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         // Schedule the alarm
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent)
