@@ -5,9 +5,18 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="18dp"
-        android:gravity="center"
-        android:background="@color/lightgray"> <!-- Background color -->
 
+        android:gravity="center"
+        android:background="@color/charcoal"> <!-- Background color -->
+
+
+    <Button
+        android:id="@+id/buttonSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Settings"
+        android:layout_marginTop="20dp"
+        />
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
@@ -28,7 +37,7 @@
         android:inputType="text"
         android:background="@drawable/edittext_background"
         android:padding="10dp"
-        android:layout_marginTop="20px"/>
+        android:layout_marginTop="40px"/>
 
         <EditText
             android:id="@+id/editTextDescription"
@@ -57,7 +66,34 @@
         android:layout_weight="1"
         android:layout_marginTop="16dp"
         android:background="@color/mintgreen"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"    />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="20dp">
+
+        <Button
+            android:id="@+id/buttonUpdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onUpdateClicked"
+            android:text="Update"
+            android:backgroundTint="@color/blue"
+            android:layout_marginRight="20dp"/>
+
+        <Button
+            android:id="@+id/buttonDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onDeleteClicked"
+            android:text="Delete"
+            android:backgroundTint="@color/red"/>
+
+    </LinearLayout>
+
 
     <!-- Search Bar -->
     <EditText
@@ -70,11 +106,6 @@
         android:textColor="@color/black"
         android:padding="10dp" /> <!-- Padding for text -->
 
-    <Button
-        android:id="@+id/buttonSettings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Settings"
-        android:layout_marginTop="20dp"/>
+
 </LinearLayout>
 
