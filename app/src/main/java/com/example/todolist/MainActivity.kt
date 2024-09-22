@@ -12,6 +12,8 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -28,6 +30,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+// In onCreate() of MainActivity
+        val settingsButton: Button = findViewById(R.id.buttonSettings)
+        settingsButton.setOnClickListener {
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
+        }
+
 
         // Initialize UI Components
         val editTextTask: EditText = findViewById(R.id.editTextTask)
@@ -140,8 +150,7 @@ class MainActivity : AppCompatActivity() {
         adapter.notifyDataSetChanged()
     }
 
-
-
+    // Show Time Picker and Schedule Alarm
     private fun showTimePickerDialog(task: String, description: String) {
         val calendar = Calendar.getInstance()
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
@@ -150,10 +159,29 @@ class MainActivity : AppCompatActivity() {
         val timePickerDialog = TimePickerDialog(this, { _, selectedHour, selectedMinute ->
             calendar.set(Calendar.HOUR_OF_DAY, selectedHour)
             calendar.set(Calendar.MINUTE, selectedMinute)
-            // You might want to set the alarm here using the selected time
+            val timeInMillis = calendar.timeInMillis
+
+            // Schedule the alarm with the selected time
+            scheduleAlarm(task, description, timeInMillis)
+
             addTask("$task: $description") // Add the task with description after setting the reminder
         }, hour, minute, true)
 
         timePickerDialog.show()
     }
+
+    // Function to schedule alarm
+    private fun scheduleAlarm(task: String, description: String, timeInMillis: Long) {
+        val intent = Intent(this, AlarmReceiver::class.java).apply {
+            putExtra("TASK", task)
+            putExtra("DESCRIPTION", description)
+        }
+        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        // Schedule the alarm
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent)
+
+        Toast.makeText(this, "Alarm set for task: $task", Toast.LENGTH_SHORT).show()
+    }
+
 }

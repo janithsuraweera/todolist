@@ -2,29 +2,37 @@ package com.example.todolist
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.widget.CompoundButton
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 
 class SettingsActivity : AppCompatActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
+        // Initialize SharedPreferences
         sharedPreferences = getSharedPreferences("ToDoListPrefs", MODE_PRIVATE)
+        editor = sharedPreferences.edit()
+
+        // Dark Mode Switch
         val darkModeSwitch: Switch = findViewById(R.id.switchDarkMode)
+        val isDarkMode = sharedPreferences.getBoolean("darkMode", false)
 
-        // Set the switch state based on saved preferences
-        darkModeSwitch.isChecked = sharedPreferences.getBoolean("dark_mode", false)
-
-        darkModeSwitch.setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
-            val editor = sharedPreferences.edit()
-            editor.putBoolean("dark_mode", isChecked)
+        darkModeSwitch.isChecked = isDarkMode
+        darkModeSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                editor.putBoolean("darkMode", true)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                editor.putBoolean("darkMode", false)
+            }
             editor.apply()
-            recreate() // Recreate activity to apply changes
         }
     }
 }

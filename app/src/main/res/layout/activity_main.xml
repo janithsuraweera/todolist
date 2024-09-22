@@ -1,45 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    android:orientation="vertical"-->
-<!--    android:padding="16dp">-->
-
-<!--    <EditText-->
-<!--        android:id="@+id/editTextTask"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:hint="Task" />-->
-
-<!--    <EditText-->
-<!--        android:id="@+id/editTextDescription"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:hint="Enter task description"-->
-<!--        android:textColor="@color/black"-->
-<!--        android:inputType="text"-->
-<!--        android:background="@drawable/edittext_background"-->
-<!--        android:padding="10dp" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/buttonAdd"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Add Task" />-->
-
-<!--    <EditText-->
-<!--        android:id="@+id/searchBar"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:hint="Search Task" />-->
-
-<!--    <ListView-->
-<!--        android:id="@+id/listView"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_weight="1" />-->
-<!--</LinearLayout>-->
-
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -109,5 +68,13 @@
         android:background="@drawable/edittext_background"
         android:textColor="@color/black"
         android:padding="10dp" /> <!-- Padding for text -->
+
+    <Button
+        android:id="@+id/buttonSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Settings"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"/>
 </LinearLayout>
 
