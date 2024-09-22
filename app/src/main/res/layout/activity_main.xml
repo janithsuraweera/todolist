@@ -3,21 +3,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="18dp"
+    android:gravity="center"
+    android:background="@color/lightgray"> <!-- Background color -->
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Task Master"
+        android:textAlignment="center"
+        android:textSize="28sp"
+    android:textStyle="bold"
+    android:textColor="@color/black" />
 
     <EditText
         android:id="@+id/editTextTask"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter Task"
-        android:inputType="text" />
+        android:inputType="text"
+        android:background="@drawable/edittext_background"
+    android:padding="10dp" />
 
     <Button
         android:id="@+id/buttonAdd"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Task"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/softblue"
+    android:text="Add Task"
+    android:textColor="@color/white"
+    android:textAlignment="center" />
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="16dp"
+        android:background="@color/mintgreen" />
 
     <!-- Search Bar -->
     <EditText
@@ -25,11 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Search Task"
-        android:layout_marginTop="16dp" />
-
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:background="@drawable/edittext_background"
+    android:padding="10dp" /> <!-- Padding for text -->
 </LinearLayout>
