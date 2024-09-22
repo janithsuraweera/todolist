@@ -142,22 +142,22 @@ class MainActivity : AppCompatActivity() {
         val timePickerDialog = TimePickerDialog(this, { _, selectedHour, selectedMinute ->
             calendar.set(Calendar.HOUR_OF_DAY, selectedHour)
             calendar.set(Calendar.MINUTE, selectedMinute)
-            setReminder(task, calendar.timeInMillis)
+//            setReminder(task, calendar.timeInMillis)
             addTask(task) // Add the task after setting the reminder
         }, hour, minute, true)
 
         timePickerDialog.show()
     }
 
-    private fun setReminder(task: String, timeInMillis: Long) {
-        val intent = Intent(this, ReminderReceiver::class.java)
-        intent.putExtra("task", task)
-        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
-
-        alarmManager.setExact(
-            AlarmManager.RTC_WAKEUP,
-            timeInMillis,
-            pendingIntent
-        )
+//    private fun setReminder(task: String, timeInMillis: Long) {
+//        val intent = Intent(this, ReminderReceiver::class.java)
+//        intent.putExtra("task", task)
+//        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
+//
+//        alarmManager.setExact(
+//            AlarmManager.RTC_WAKEUP,
+//            timeInMillis,
+//            pendingIntent
+//        )
     }
-}
+
