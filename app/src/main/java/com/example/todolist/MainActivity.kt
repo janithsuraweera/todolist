@@ -3,13 +3,18 @@ package com.example.todolist
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.app.TimePickerDialog
+import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.widget.addTextChangedListener
 import java.util.*
 
@@ -96,19 +101,30 @@ class MainActivity : AppCompatActivity() {
         todoList.add(task)
         filterTasks(searchBar.text.toString())
         saveTasks()
+        updateWidget() // Update the widget when a task is added
     }
 
     private fun updateTask(oldTask: String, newTask: String, position: Int) {
         todoList[position] = newTask
         filterTasks(searchBar.text.toString())
         saveTasks()
+        updateWidget() // Update the widget when a task is updated
     }
 
     private fun deleteTask(position: Int) {
         todoList.removeAt(position)
         filterTasks(searchBar.text.toString())
         saveTasks()
+        updateWidget() // Update the widget when a task is deleted
     }
+
+    // Method to send a broadcast to update the widget
+    private fun updateWidget() {
+        val intent = Intent(this, TaskWidgetProvider::class.java)
+        intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+        sendBroadcast(intent) // Send the broadcast
+    }
+
 
     private fun showUpdateDeleteDialog(task: String, position: Int) {
         val dialog = AlertDialog.Builder(this)

@@ -1,25 +1,38 @@
 package com.example.todolist
 
-
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.media.RingtoneManager
+import android.net.Uri
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        val taskDescription = intent.getStringExtra("task_description")
+        val task = intent.getStringExtra("TASK") ?: "No Task"
+        val description = intent.getStringExtra("DESCRIPTION") ?: "No Description"
 
-        val notificationBuilder = NotificationCompat.Builder(context, "task_channel")
-            .setSmallIcon(R.drawable.applogo)
-            .setContentTitle("Task Reminder")
-            .setContentText(taskDescription)
+        showNotification(context, task, description)
+    }
+
+    private fun showNotification(context: Context, task: String, description: String) {
+        val notificationId = 101
+        val channelId = "todo_channel"
+
+        // Set notification sound
+        val sound: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+
+        val builder = NotificationCompat.Builder(context, channelId)
+            .setSmallIcon(R.drawable.applogo) // Replace with your notification icon
+            .setContentTitle(task)
+            .setContentText(description)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setSound(sound)
             .setAutoCancel(true)
 
-        with(NotificationManagerCompat.from(context)) {
-            notify(1001, notificationBuilder.build())
-        }
+        val notificationManager = NotificationManagerCompat.from(context)
+        notificationManager.notify(notificationId, builder.build())
     }
 }
