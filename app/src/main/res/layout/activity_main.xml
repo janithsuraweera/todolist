@@ -1,41 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="18dp"
-    android:gravity="center"
-    android:background="@color/lightgray"> <!-- Background color -->
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:orientation="vertical"-->
+<!--    android:padding="16dp">-->
+
+<!--    <EditText-->
+<!--        android:id="@+id/editTextTask"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="Task" />-->
+
+<!--    <EditText-->
+<!--        android:id="@+id/editTextDescription"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="Enter task description"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:inputType="text"-->
+<!--        android:background="@drawable/edittext_background"-->
+<!--        android:padding="10dp" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/buttonAdd"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Add Task" />-->
+
+<!--    <EditText-->
+<!--        android:id="@+id/searchBar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="Search Task" />-->
+
+<!--    <ListView-->
+<!--        android:id="@+id/listView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1" />-->
+<!--</LinearLayout>-->
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="18dp"
+        android:gravity="center"
+        android:background="@color/lightgray"> <!-- Background color -->
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Task Master"
+        android:text="@string/task_master"
         android:textAlignment="center"
         android:textSize="28sp"
-    android:textStyle="bold"
-    android:textColor="@color/black" />
+        android:textStyle="bold"
+        android:textColor="@color/black" />
 
     <EditText
         android:id="@+id/editTextTask"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Task"
+        android:hint="@string/enter_task"
+        android:textColor="@color/black"
         android:inputType="text"
         android:background="@drawable/edittext_background"
-    android:padding="10dp" />
+        android:padding="10dp" />
 
+        <EditText
+            android:id="@+id/editTextDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter task description"
+            android:textColor="@color/black"
+            android:inputType="text"
+            android:background="@drawable/edittext_background"
+            android:padding="20dp"
+            android:layout_marginTop="15px"/>
     <Button
         android:id="@+id/buttonAdd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/softblue"
-    android:text="Add Task"
-    android:textColor="@color/white"
-    android:textAlignment="center" />
+        android:text="@string/add_task"
+        android:textColor="@color/white"
+        android:textAlignment="center" />
 
     <ListView
         android:id="@+id/listView"
@@ -43,15 +96,18 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_marginTop="16dp"
-        android:background="@color/mintgreen" />
+        android:background="@color/mintgreen"
+        android:textColor="@color/black"/>
 
     <!-- Search Bar -->
     <EditText
         android:id="@+id/searchBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Search Task"
+        android:hint="@string/search_task"
         android:layout_marginTop="16dp"
         android:background="@drawable/edittext_background"
-    android:padding="10dp" /> <!-- Padding for text -->
+        android:textColor="@color/black"
+        android:padding="10dp" /> <!-- Padding for text -->
 </LinearLayout>
+

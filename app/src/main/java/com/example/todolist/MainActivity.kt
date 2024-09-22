@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         // Initialize UI Components
         val editTextTask: EditText = findViewById(R.id.editTextTask)
+        val editTextDescription: EditText = findViewById(R.id.editTextDescription) // Ensure this exists in your layout
         val buttonAdd: Button = findViewById(R.id.buttonAdd)
         searchBar = findViewById(R.id.searchBar)
         listView = findViewById(R.id.listView)
@@ -42,17 +43,22 @@ class MainActivity : AppCompatActivity() {
 
         // Load saved tasks
         todoList = loadTasks()
-        filteredList = todoList.toMutableList() // Initially, filtered list is same as todo list
+        filteredList = todoList.toMutableList() // Now this is safe
         adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, filteredList)
         listView.adapter = adapter
 
         // Add Task with Time Picker for reminder
         buttonAdd.setOnClickListener {
             val task = editTextTask.text.toString()
-            if (task.isNotEmpty()) {
+            val description = editTextDescription.text.toString()
+
+            if (task.isNotEmpty() && description.isNotEmpty()) {
                 // Show TimePickerDialog to select reminder time
-                showTimePickerDialog(task)
+                showTimePickerDialog(task, description)
                 editTextTask.text.clear()
+                editTextDescription.text.clear() // Clear description field
+            } else {
+                Toast.makeText(this, "Please enter a task and description", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -134,7 +140,9 @@ class MainActivity : AppCompatActivity() {
         adapter.notifyDataSetChanged()
     }
 
-    private fun showTimePickerDialog(task: String) {
+
+
+    private fun showTimePickerDialog(task: String, description: String) {
         val calendar = Calendar.getInstance()
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
@@ -142,22 +150,10 @@ class MainActivity : AppCompatActivity() {
         val timePickerDialog = TimePickerDialog(this, { _, selectedHour, selectedMinute ->
             calendar.set(Calendar.HOUR_OF_DAY, selectedHour)
             calendar.set(Calendar.MINUTE, selectedMinute)
-//            setReminder(task, calendar.timeInMillis)
-            addTask(task) // Add the task after setting the reminder
+            // You might want to set the alarm here using the selected time
+            addTask("$task: $description") // Add the task with description after setting the reminder
         }, hour, minute, true)
 
         timePickerDialog.show()
     }
-
-//    private fun setReminder(task: String, timeInMillis: Long) {
-//        val intent = Intent(this, ReminderReceiver::class.java)
-//        intent.putExtra("task", task)
-//        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
-//
-//        alarmManager.setExact(
-//            AlarmManager.RTC_WAKEUP,
-//            timeInMillis,
-//            pendingIntent
-//        )
-    }
-
+}
