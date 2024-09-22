@@ -8,10 +8,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.widget.addTextChangedListener
 import java.util.*
 
@@ -25,6 +25,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: ArrayAdapter<String>
     private lateinit var alarmManager: AlarmManager
     private lateinit var searchBar: EditText
+
+    private var selectedPosition: Int = -1
+    private var previouslySelectedPosition: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,19 +68,29 @@ class MainActivity : AppCompatActivity() {
                 editTextTask.text.clear()
                 editTextDescription.text.clear()
             } else {
-                Toast.makeText(this, "Please enter a task and description", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please enter a task and description", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
 
         // Search Task
         searchBar.addTextChangedListener { s -> filterTasks(s.toString()) }
 
-        // On item long-click (Delete or Update task)
-        listView.setOnItemLongClickListener { _, _, position, _ ->
-            val selectedTask = filteredList[position]
-            val actualPosition = todoList.indexOf(selectedTask)
-            showUpdateDeleteDialog(selectedTask, actualPosition)
-            true
+        // On item click to select a task
+        listView.setOnItemClickListener { _, view, position, _ ->
+            // Reset the previously selected item background color
+            if (previouslySelectedPosition != -1) {
+                listView.getChildAt(previouslySelectedPosition)
+                    ?.setBackgroundColor(resources.getColor(android.R.color.transparent))
+            }
+
+            // Highlight the newly selected task
+            selectedPosition = position
+            view.setBackgroundColor(resources.getColor(android.R.color.holo_blue_light))
+            previouslySelectedPosition = selectedPosition
+
+            // Show update/delete dialog
+            showUpdateDeleteDialog(position)
         }
     }
 
@@ -112,31 +125,10 @@ class MainActivity : AppCompatActivity() {
         updateWidget() // Update the widget when a task is deleted
     }
 
-    // Method to send a broadcast to update the widget
     private fun updateWidget() {
         val intent = Intent(this, TaskWidgetProvider::class.java)
         intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
         sendBroadcast(intent) // Send the broadcast
-    }
-
-    private fun showUpdateDeleteDialog(task: String, position: Int) {
-        val dialog = AlertDialog.Builder(this)
-        dialog.setTitle("Update or Delete Task")
-        val input = EditText(this)
-        input.setText(task)
-
-        dialog.setView(input)
-
-        dialog.setPositiveButton("Update") { _, _ ->
-            val updatedTask = input.text.toString()
-            if (updatedTask.isNotEmpty()) {
-                updateTask(task, updatedTask, position)
-            }
-        }
-
-        dialog.setNegativeButton("Delete") { _, _ -> deleteTask(position) }
-
-        dialog.create().show()
     }
 
     private fun filterTasks(query: String) {
@@ -153,7 +145,6 @@ class MainActivity : AppCompatActivity() {
         adapter.notifyDataSetChanged()
     }
 
-    // Show Time Picker and Schedule Alarm
     private fun showTimePickerDialog(task: String, description: String) {
         val calendar = Calendar.getInstance()
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
@@ -173,17 +164,78 @@ class MainActivity : AppCompatActivity() {
         timePickerDialog.show()
     }
 
-    // Function to schedule alarm
     private fun scheduleAlarm(task: String, description: String, timeInMillis: Long) {
         val intent = Intent(this, AlarmReceiver::class.java).apply {
             putExtra("TASK", task)
             putExtra("DESCRIPTION", description)
         }
-        val pendingIntent = PendingIntent.getBroadcast(this, todoList.size, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent = PendingIntent.getBroadcast(
+            this,
+            todoList.size,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
 
         // Schedule the alarm
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent)
 
         Toast.makeText(this, "Alarm set for task: $task", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showUpdateDeleteDialog(position: Int) {
+        val selectedTask = filteredList[position]
+        val options = arrayOf("Update", "Delete")
+
+        val dialog = AlertDialog.Builder(this)
+        dialog.setTitle("Select Action")
+        dialog.setItems(options) { _, which ->
+            when (which) {
+                0 -> {
+                    // Update Action
+                    showUpdateDialog(selectedTask, position)
+                }
+
+                1 -> {
+                    // Delete Action
+                    showConfirmationDialog(position)
+                }
+            }
+        }
+        dialog.setNegativeButton("Cancel", null)
+        dialog.create().show()
+    }
+
+    private fun showUpdateDialog(task: String, position: Int) {
+        val dialog = AlertDialog.Builder(this)
+        dialog.setTitle("Update Task")
+        val input = EditText(this)
+        input.setText(task)
+
+        dialog.setView(input)
+
+        dialog.setPositiveButton("Update") { _, _ ->
+            val updatedTask = input.text.toString()
+            if (updatedTask.isNotEmpty()) {
+                updateTask(task, updatedTask, position)
+            }
+        }
+
+        dialog.setNegativeButton("Cancel", null)
+
+        dialog.create().show()
+    }
+
+    private fun showConfirmationDialog(position: Int) {
+        val dialog = AlertDialog.Builder(this)
+        dialog.setTitle("Delete Task")
+        dialog.setMessage("Are you sure you want to delete this task?")
+
+        dialog.setPositiveButton("Yes") { _, _ ->
+            deleteTask(position)
+        }
+
+        dialog.setNegativeButton("No", null)
+
+        dialog.create().show()
     }
 }

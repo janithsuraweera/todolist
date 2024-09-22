@@ -8,13 +8,21 @@ import android.widget.RemoteViews
 
 class TaskWidgetProvider : AppWidgetProvider() {
 
-    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
+    override fun onUpdate(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetIds: IntArray
+    ) {
         for (appWidgetId in appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId)
         }
     }
 
-    private fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
+    private fun updateAppWidget(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetId: Int
+    ) {
         val views = RemoteViews(context.packageName, R.layout.widget_layout)
 
         // Load tasks from SharedPreferences
@@ -34,7 +42,12 @@ class TaskWidgetProvider : AppWidgetProvider() {
         super.onReceive(context, intent)
         if (intent.action == AppWidgetManager.ACTION_APPWIDGET_UPDATE) {
             val appWidgetManager = AppWidgetManager.getInstance(context)
-            val appWidgetIds = appWidgetManager.getAppWidgetIds(Intent(context, TaskWidgetProvider::class.java).component)
+            val appWidgetIds = appWidgetManager.getAppWidgetIds(
+                Intent(
+                    context,
+                    TaskWidgetProvider::class.java
+                ).component
+            )
             for (appWidgetId in appWidgetIds) {
                 updateAppWidget(context, appWidgetManager, appWidgetId)
             }

@@ -62,7 +62,8 @@ class SettingsActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == 999 && resultCode == RESULT_OK) {
-            val ringtoneUri = data?.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
+            val ringtoneUri =
+                data?.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
             if (ringtoneUri != null) {
                 editor.putString("ringtone", ringtoneUri.toString())
                 editor.apply()

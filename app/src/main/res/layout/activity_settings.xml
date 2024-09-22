@@ -1,19 +1,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/charcoal"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"> <!-- Set a background color -->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:text="Settings"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"/>
 
     <Button
         android:id="@+id/buttonRingtone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Change Ringtone" />
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/softblue"
+        android:padding="12dp"
+        android:shape="rectangle"
+        android:text="Change Ringtone"
+        android:textColor="@android:color/white" />
 
     <Switch
         android:id="@+id/switchVibration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enable Vibration" />
+        android:layout_marginBottom="20dp"
+        android:text="Enable Vibration"
+        android:textColor="@android:color/white"
+        android:background="@color/softblue"
+        android:gravity="center"/>
 
 </LinearLayout>
