@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         // Settings Button
-        val settingsButton: Button = findViewById(R.id.buttonSettings)
+        val settingsButton: ImageButton = findViewById(R.id.buttonSettings)
         settingsButton.setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
         }

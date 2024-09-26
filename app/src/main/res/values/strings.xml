@@ -4,4 +4,5 @@
     <string name="task_master">Task Master</string>
     <string name="enter_task">Enter Task</string>
     <string name="add_task">Add Task</string>
+    <string name="settings">Settings</string>
 </resources>
