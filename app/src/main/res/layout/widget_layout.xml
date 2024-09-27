@@ -12,7 +12,7 @@
         android:textColor="@color/white"
         android:textStyle="bold"
         android:textSize="22sp"
-        android:text="Task Master"
+        android:text="Upcoming Task"
         android:layout_gravity="center"
     />
 
