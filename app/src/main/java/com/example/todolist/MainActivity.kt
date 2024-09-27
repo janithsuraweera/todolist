@@ -158,7 +158,9 @@ class MainActivity : AppCompatActivity() {
             // Schedule the alarm with the selected time
             scheduleAlarm(task, description, timeInMillis)
 
-            addTask("$task: $description") // Add the task with description after setting the reminder
+            val formattedTime = String.format("%02d:%02d", selectedHour, selectedMinute) // Format time
+            addTask("$task: $description @ $formattedTime") // Add task with time
+
         }, hour, minute, true)
 
         timePickerDialog.show()
@@ -168,6 +170,7 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, AlarmReceiver::class.java).apply {
             putExtra("TASK", task)
             putExtra("DESCRIPTION", description)
+            putExtra("TIME", timeInMillis) // Pass time to receiver
         }
         val pendingIntent = PendingIntent.getBroadcast(
             this,
@@ -176,11 +179,9 @@ class MainActivity : AppCompatActivity() {
             PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-        // Schedule the alarm
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent)
-
-        Toast.makeText(this, "Alarm set for task: $task", Toast.LENGTH_SHORT).show()
     }
+
 
     private fun showUpdateDeleteDialog(position: Int) {
         val selectedTask = filteredList[position]
