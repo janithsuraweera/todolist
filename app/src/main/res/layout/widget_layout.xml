@@ -7,14 +7,23 @@
     android:layout_gravity="center_horizontal">
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:text="Task Master"
+        android:layout_gravity="center"
+    />
+
+    <TextView
         android:id="@+id/widgetTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:textColor="#ffffff"
+        android:textColor="@color/black"
         android:textSize="18sp"
-        android:textStyle="bold"
-        android:gravity="center"
+
         android:layout_gravity="center"
         android:text="No Tasks Available"
         android:background="@drawable/task_item_background" />
