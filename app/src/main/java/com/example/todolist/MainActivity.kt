@@ -147,21 +147,29 @@ class MainActivity : AppCompatActivity() {
 
     private fun showTimePickerDialog(task: String, description: String) {
         val calendar = Calendar.getInstance()
-        val hour = calendar.get(Calendar.HOUR_OF_DAY)
-        val minute = calendar.get(Calendar.MINUTE)
+        val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
+        val currentMinute = calendar.get(Calendar.MINUTE)
 
         val timePickerDialog = TimePickerDialog(this, { _, selectedHour, selectedMinute ->
             calendar.set(Calendar.HOUR_OF_DAY, selectedHour)
             calendar.set(Calendar.MINUTE, selectedMinute)
-            val timeInMillis = calendar.timeInMillis
 
-            // Schedule the alarm with the selected time
-            scheduleAlarm(task, description, timeInMillis)
+            if (calendar.timeInMillis <= System.currentTimeMillis()) {
+                // Show error if the selected time is in the past
+                Toast.makeText(this, "You cannot set a reminder in the past", Toast.LENGTH_SHORT).show()
+            } else {
+                val timeInMillis = calendar.timeInMillis
+                scheduleAlarm(task, description, timeInMillis)
 
-            val formattedTime = String.format("%02d:%02d", selectedHour, selectedMinute) // Format time
-            addTask("$task: $description @ $formattedTime") // Add task with time
+                val formattedTime = String.format("%02d:%02d", selectedHour, selectedMinute)
+                addTask("$task: $description @ $formattedTime")
 
-        }, hour, minute, true)
+                // Calculate the time left until the alarm goes off
+                val timeLeft = timeInMillis - System.currentTimeMillis()
+                val minutesLeft = timeLeft / 60000
+                Toast.makeText(this, "Alarm set for $minutesLeft minutes from now", Toast.LENGTH_LONG).show()
+            }
+        }, currentHour, currentMinute, true)
 
         timePickerDialog.show()
     }
@@ -170,7 +178,7 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, AlarmReceiver::class.java).apply {
             putExtra("TASK", task)
             putExtra("DESCRIPTION", description)
-            putExtra("TIME", timeInMillis) // Pass time to receiver
+            putExtra("TIME", timeInMillis)
         }
         val pendingIntent = PendingIntent.getBroadcast(
             this,
@@ -181,7 +189,6 @@ class MainActivity : AppCompatActivity() {
 
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent)
     }
-
 
     private fun showUpdateDeleteDialog(position: Int) {
         val selectedTask = filteredList[position]
