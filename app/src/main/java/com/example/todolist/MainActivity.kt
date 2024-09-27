@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Initialize UI Components
+        // Initialize UI Components activity main eke
         val editTextTask: EditText = findViewById(R.id.editTextTask)
         val editTextDescription: EditText = findViewById(R.id.editTextDescription)
         val buttonAdd: Button = findViewById(R.id.buttonAdd)
@@ -41,13 +41,13 @@ class MainActivity : AppCompatActivity() {
         listView = findViewById(R.id.listView)
         alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-        // Settings Button
+        // Settings Button navigation
         val settingsButton: ImageButton = findViewById(R.id.buttonSettings)
         settingsButton.setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
 
-        // SharedPreferences Initialize
+        // SharedPreferences Initialize kiriima
         sharedPreferences = getSharedPreferences("ToDoListPrefs", Context.MODE_PRIVATE)
         editor = sharedPreferences.edit()
 
@@ -94,16 +94,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+
+
+    //sharedPreferences ekeata data set kiriima
     private fun loadTasks(): MutableList<String> {
         val tasksSet = sharedPreferences.getStringSet("tasks", emptySet())
         return tasksSet?.toMutableList() ?: mutableListOf()
     }
+
 
     private fun saveTasks() {
         editor.putStringSet("tasks", todoList.toSet())
         editor.apply()
     }
 
+
+
+    //CRUD
     private fun addTask(task: String) {
         todoList.add(task)
         filterTasks(searchBar.text.toString())
@@ -125,6 +133,10 @@ class MainActivity : AppCompatActivity() {
         updateWidget() // Update the widget when a task is deleted
     }
 
+
+
+
+    //Widget eka auto update wiima
     private fun updateWidget() {
         val intent = Intent(this, TaskWidgetProvider::class.java)
         intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
@@ -145,6 +157,8 @@ class MainActivity : AppCompatActivity() {
         adapter.notifyDataSetChanged()
     }
 
+
+    //time ekae validation
     private fun showTimePickerDialog(task: String, description: String) {
         val calendar = Calendar.getInstance()
         val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
@@ -174,6 +188,8 @@ class MainActivity : AppCompatActivity() {
         timePickerDialog.show()
     }
 
+
+    //alam eka set
     private fun scheduleAlarm(task: String, description: String, timeInMillis: Long) {
         val intent = Intent(this, AlarmReceiver::class.java).apply {
             putExtra("TASK", task)
@@ -190,6 +206,8 @@ class MainActivity : AppCompatActivity() {
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent)
     }
 
+
+    //promt box befor deleting
     private fun showUpdateDeleteDialog(position: Int) {
         val selectedTask = filteredList[position]
         val options = arrayOf("Update", "Delete")
@@ -213,6 +231,8 @@ class MainActivity : AppCompatActivity() {
         dialog.create().show()
     }
 
+
+    //promtbot befotr updating
     private fun showUpdateDialog(task: String, position: Int) {
         val dialog = AlertDialog.Builder(this)
         dialog.setTitle("Update Task")
@@ -233,6 +253,8 @@ class MainActivity : AppCompatActivity() {
         dialog.create().show()
     }
 
+
+    //delet task befor promtbox
     private fun showConfirmationDialog(position: Int) {
         val dialog = AlertDialog.Builder(this)
         dialog.setTitle("Delete Task")
